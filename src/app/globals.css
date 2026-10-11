@@ -1,26 +1,166 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-forest: #173d32;
+  --color-forest-dark: #0f2a23;
+  --color-cream: #f6f3ee;
+  --color-amber: #e7a65b;
+  --color-amber-dark: #d1913f;
+  --color-charcoal: #242824;
+  --color-white: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-forest: var(--color-forest);
+  --color-forest-dark: var(--color-forest-dark);
+  --color-cream: var(--color-cream);
+  --color-amber: var(--color-amber);
+  --color-amber-dark: var(--color-amber-dark);
+  --color-charcoal: var(--color-charcoal);
+  --font-sans: var(--font-system);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  /* A fast, dependency-free system font stack (no external font request,
+     which matters for students on slow or costly mobile data). */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+.container-page {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-page {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-forest);
+  color: var(--color-white);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: background-color 150ms ease, transform 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background-color: var(--color-forest-dark);
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background-color: var(--color-white);
+  color: var(--color-forest);
+  border: 1.5px solid var(--color-forest);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: background-color 150ms ease, transform 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  background-color: color-mix(in srgb, var(--color-forest) 8%, white);
+  transform: translateY(-1px);
+}
+
+.btn-whatsapp {
+  background-color: #25d366;
+  color: #063311;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: filter 150ms ease, transform 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-whatsapp:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 2px rgba(23, 61, 50, 0.06), 0 8px 24px rgba(23, 61, 50, 0.05);
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 10px rgba(23, 61, 50, 0.08), 0 16px 32px rgba(23, 61, 50, 0.1);
+  transform: translateY(-3px);
+}
+
+.amber-tag {
+  background-color: var(--color-amber);
+  color: var(--color-forest-dark);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.demo-tag {
+  background-color: #fff4e6;
+  color: #9a5b12;
+  border: 1px solid #f0c98a;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+input,
+textarea,
+select {
+  background-color: var(--color-white);
+  border: 1.5px solid #e4ddd0;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  width: 100%;
+  color: var(--color-charcoal);
+  transition: border-color 150ms ease;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-forest);
 }
