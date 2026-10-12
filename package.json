@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npm run db:deploy && next start",
     "lint": "eslint",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx -r tsconfig-paths/register src/db/scripts/seed.ts",

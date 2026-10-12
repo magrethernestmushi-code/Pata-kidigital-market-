@@ -7,6 +7,12 @@ import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 import BottomNav from "@/components/BottomNav";
 import { getSetting } from "@/lib/settings";
 
+// Every page reads live data (products, stock, prices, business settings)
+// from the database on each request. Without this, Next.js would prerender
+// pages once at build time and freeze that snapshot — including the
+// WhatsApp number and anything an admin later changes in the dashboard.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "Pata KiDigital Marketplace — Student life. Sorted.",
