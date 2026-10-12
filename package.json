@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx -r tsconfig-paths/register src/db/scripts/seed.ts",
+    "db:deploy": "drizzle-kit push --force && npm run db:seed",
     "postinstall": "exit 0"
   },
   "dependencies": {

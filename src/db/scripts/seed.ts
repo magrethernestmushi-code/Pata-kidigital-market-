@@ -1,10 +1,25 @@
 import "dotenv/config";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { categories, products, suppliers, adminUsers, settings } from "@/db/schema";
 import { hashPassword } from "@/lib/auth";
 import { slugify } from "@/lib/format";
 
 async function main() {
+  // Safe to run on every deploy: if the demo admin already exists, the
+  // database has already been seeded once, so skip re-inserting suppliers
+  // (which have no unique constraint and would otherwise duplicate).
+  const [existingAdmin] = await db
+    .select({ id: adminUsers.id })
+    .from(adminUsers)
+    .where(eq(adminUsers.email, "admin@patakidigital.co.tz"))
+    .limit(1);
+
+  if (existingAdmin) {
+    console.log("Demo data already seeded — skipping (admin user already exists).");
+    process.exit(0);
+  }
+
   console.log("Seeding Pata KiDigital Marketplace demo data...");
 
   // --- Settings ---
