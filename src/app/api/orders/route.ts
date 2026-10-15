@@ -18,6 +18,8 @@ const orderSchema = z.object({
   deliveryLocation: z.string().trim().min(2).max(220),
   deliveryInstructions: z.string().trim().max(500).optional().nullable(),
   preferredPayment: z.string().trim().min(2).max(60),
+  deliveryLat: z.number().min(-90).max(90).optional().nullable(),
+  deliveryLng: z.number().min(-180).max(180).optional().nullable(),
   items: z.array(itemSchema).min(1).max(40),
 });
 
@@ -102,6 +104,8 @@ export async function POST(req: Request) {
       university: data.university,
       deliveryLocation: data.deliveryLocation,
       deliveryInstructions: data.deliveryInstructions || null,
+      deliveryLat: data.deliveryLat != null ? String(data.deliveryLat) : null,
+      deliveryLng: data.deliveryLng != null ? String(data.deliveryLng) : null,
       preferredPayment: data.preferredPayment,
       subtotalTzs: String(subtotal),
       deliveryFeeTzs: "0",

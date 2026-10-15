@@ -39,6 +39,21 @@ export default async function AdminOrderDetailPage({
             {order.deliveryInstructions && (
               <Row label="Instructions" value={order.deliveryInstructions} />
             )}
+            {order.deliveryLat && order.deliveryLng && (
+              <div className="flex justify-between gap-3 items-center">
+                <dt className="text-charcoal/50">Shared Pin</dt>
+                <dd>
+                  <a
+                    href={`https://maps.google.com/?q=${order.deliveryLat},${order.deliveryLng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-forest font-semibold underline"
+                  >
+                    📍 Open in Google Maps
+                  </a>
+                </dd>
+              </div>
+            )}
             <Row label="Payment Method" value={order.preferredPayment} />
           </dl>
         </div>

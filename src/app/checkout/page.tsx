@@ -27,6 +27,28 @@ export default function CheckoutPage() {
     deliveryInstructions: "",
     preferredPayment: PAYMENT_METHODS[0],
   });
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationStatus, setLocationStatus] = useState<
+    "idle" | "requesting" | "granted" | "denied" | "unsupported"
+  >("idle");
+
+  function handleShareLocation() {
+    if (!("geolocation" in navigator)) {
+      setLocationStatus("unsupported");
+      return;
+    }
+    setLocationStatus("requesting");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocationStatus("granted");
+      },
+      () => {
+        setLocationStatus("denied");
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -50,6 +72,8 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          deliveryLat: coords?.lat ?? null,
+          deliveryLng: coords?.lng ?? null,
           items: items.map((i) => ({
             productId: i.productId,
             variation: i.variation ?? null,
@@ -112,6 +136,53 @@ export default function CheckoutPage() {
               placeholder="e.g. Hall 7, Room 204"
             />
           </Field>
+
+          <div className="rounded-lg border border-forest/15 bg-forest/5 p-3">
+            <button
+              type="button"
+              onClick={handleShareLocation}
+              disabled={locationStatus === "requesting" || locationStatus === "granted"}
+              className="text-sm font-semibold text-forest-dark flex items-center gap-1.5 disabled:opacity-70"
+            >
+              📍{" "}
+              {locationStatus === "granted"
+                ? "Location shared"
+                : locationStatus === "requesting"
+                ? "Getting your location..."
+                : "Share my exact location (optional)"}
+            </button>
+            {locationStatus === "idle" && (
+              <p className="text-xs text-charcoal/50 mt-1">
+                Helps our delivery rider find you faster and get an accurate delivery fee.
+              </p>
+            )}
+            {locationStatus === "granted" && coords && (
+              <p className="text-xs text-charcoal/60 mt-1">
+                Got it ✓{" "}
+                <a
+                  href={`https://maps.google.com/?q=${coords.lat},${coords.lng}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  View on map
+                </a>
+              </p>
+            )}
+            {locationStatus === "denied" && (
+              <p className="text-xs text-charcoal/60 mt-1">
+                No problem — we&apos;ll use the location you typed above. You can allow
+                location access in your browser settings if you change your mind.
+              </p>
+            )}
+            {locationStatus === "unsupported" && (
+              <p className="text-xs text-charcoal/60 mt-1">
+                Your browser doesn&apos;t support this — the location you typed above is all we
+                need.
+              </p>
+            )}
+          </div>
+
           <Field label="Delivery Instructions (optional)">
             <textarea
               rows={3}

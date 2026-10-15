@@ -126,6 +126,8 @@ export const orders = pgTable("orders", {
   university: varchar("university", { length: 160 }).notNull(),
   deliveryLocation: varchar("delivery_location", { length: 220 }).notNull(),
   deliveryInstructions: text("delivery_instructions"),
+  deliveryLat: numeric("delivery_lat", { precision: 10, scale: 7 }), // from browser geolocation, optional
+  deliveryLng: numeric("delivery_lng", { precision: 10, scale: 7 }),
   preferredPayment: varchar("preferred_payment", { length: 60 }).notNull(),
   subtotalTzs: numeric("subtotal_tzs", { precision: 12, scale: 2 }).notNull(),
   deliveryFeeTzs: numeric("delivery_fee_tzs", { precision: 12, scale: 2 })

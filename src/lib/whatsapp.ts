@@ -25,6 +25,7 @@ export function buildProductOrderMessage(params: {
     `The listed price is ${formatTzs(priceTzs)}.`,
     `Product link: ${productUrl}`,
     `Please confirm availability, total cost and delivery details.`,
+    `(Tip: tap 📎 and share your location so we can confirm delivery faster.)`,
   ].filter(Boolean);
   return lines.join("\n");
 }
@@ -33,8 +34,9 @@ export function buildCartOrderMessage(params: {
   items: { name: string; quantity: number; lineTotal: number; variation?: string | null }[];
   subtotal: number;
   deliveryLocation?: string;
+  coords?: { lat: number; lng: number } | null;
 }): string {
-  const { items, subtotal, deliveryLocation } = params;
+  const { items, subtotal, deliveryLocation, coords } = params;
   const itemLines = items.map(
     (it) =>
       `- ${it.name}${it.variation ? ` (${it.variation})` : ""} x${it.quantity} — ${formatTzs(
@@ -46,7 +48,9 @@ export function buildCartOrderMessage(params: {
     ...itemLines,
     `Subtotal: ${formatTzs(subtotal)}`,
     deliveryLocation ? `My delivery location is ${deliveryLocation}.` : null,
+    coords ? `My map pin: https://maps.google.com/?q=${coords.lat},${coords.lng}` : null,
     `Please confirm availability, total cost and delivery details.`,
+    !coords ? `(Tip: tap 📎 and share your location so we can confirm delivery faster.)` : null,
   ].filter(Boolean);
   return lines.join("\n");
 }
