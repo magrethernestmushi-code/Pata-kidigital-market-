@@ -9,13 +9,13 @@ export default function TermsPage() {
       <PageHeading title="Terms and Conditions" />
       <div className="flex flex-col gap-5 text-sm sm:text-base text-charcoal/80">
         <p>
-          By using Pata KiDigital Marketplace, you agree to the following terms.
+          By using Pata Online, you agree to the following terms.
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">About the Marketplace</h2>
         <p>
-          Pata KiDigital Marketplace is a platform connecting university students with
+          Pata Online is a platform connecting university students with
           independent partner shops and suppliers. Products are supplied, priced, and
-          fulfilled by these partners, with Pata KiDigital earning a commission on
+          fulfilled by these partners, with Pata Online earning a commission on
           completed sales. We do our best to ensure listed information is accurate, but
           availability and pricing are always subject to final confirmation from the
           supplier.
@@ -41,7 +41,7 @@ export default function TermsPage() {
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Limitation of Liability</h2>
         <p>
-          Pata KiDigital Marketplace facilitates transactions between students and partner
+          Pata Online facilitates transactions between students and partner
           suppliers. While we vet our partners, we are not the manufacturer of most listed
           products and our liability is limited to the value of the relevant order.
         </p>

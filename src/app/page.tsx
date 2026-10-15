@@ -75,7 +75,7 @@ export default async function HomePage() {
 
   const waUrl = buildWhatsAppUrl(
     whatsappNumber,
-    "Hello Pata KiDigital Marketplace. I'd like help finding a product."
+    "Hello Pata Online. I'd like help finding a product."
   );
 
   return (

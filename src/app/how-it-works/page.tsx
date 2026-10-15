@@ -3,7 +3,7 @@ import PageHeading from "@/components/PageHeading";
 
 export const metadata: Metadata = {
   title: "How It Works",
-  description: "Learn how ordering and delivery works on Pata KiDigital Marketplace.",
+  description: "Learn how ordering and delivery works on Pata Online.",
 };
 
 const steps = [
@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
     <div className="container-page py-12 max-w-3xl">
       <PageHeading
         title="How It Works"
-        subtitle="From browsing to delivery — here's exactly what happens when you order from Pata KiDigital Marketplace."
+        subtitle="From browsing to delivery — here's exactly what happens when you order from Pata Online."
       />
       <div className="flex flex-col gap-6">
         {steps.map((s) => (

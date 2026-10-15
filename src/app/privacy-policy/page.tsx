@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
       <PageHeading title="Privacy Policy" />
       <div className="flex flex-col gap-5 text-sm sm:text-base text-charcoal/80">
         <p>
-          Pata KiDigital Marketplace respects your privacy. This policy explains what
+          Pata Online respects your privacy. This policy explains what
           information we collect and how we use it.
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Information We Collect</h2>

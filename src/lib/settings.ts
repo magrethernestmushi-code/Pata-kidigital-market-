@@ -4,8 +4,8 @@ import { eq } from "drizzle-orm";
 
 const DEFAULTS: Record<string, string> = {
   whatsapp_number: process.env.WHATSAPP_NUMBER ?? "255700000000",
-  business_name: "Pata KiDigital Marketplace",
-  business_email: "hello@patakidigital.co.tz",
+  business_name: "Pata Online",
+  business_email: "hello@pataonline.co.tz",
   default_delivery_fee: "0",
 };
 

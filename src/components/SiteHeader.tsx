@@ -22,7 +22,7 @@ export default async function SiteHeader() {
   const whatsappNumber = await getSetting("whatsapp_number");
   const waUrl = buildWhatsAppUrl(
     whatsappNumber,
-    "Hello Pata KiDigital Marketplace, I have a question."
+    "Hello Pata Online, I have a question."
   );
 
   return (

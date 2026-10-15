@@ -12,7 +12,7 @@ export async function generateMetadata({
   if (!category) return {};
   return {
     title: category.name,
-    description: category.description ?? `Shop ${category.name} on Pata KiDigital Marketplace.`,
+    description: category.description ?? `Shop ${category.name} on Pata Online.`,
   };
 }
 

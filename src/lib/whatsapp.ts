@@ -19,7 +19,7 @@ export function buildProductOrderMessage(params: {
 }): string {
   const { productName, sku, priceTzs, variation, quantity, productUrl } = params;
   const lines = [
-    `Hello Pata KiDigital Marketplace. I would like to order ${productName}, quantity ${quantity}.`,
+    `Hello Pata Online. I would like to order ${productName}, quantity ${quantity}.`,
     `Product code: ${sku}`,
     variation ? `Option: ${variation}` : null,
     `The listed price is ${formatTzs(priceTzs)}.`,
@@ -42,7 +42,7 @@ export function buildCartOrderMessage(params: {
       )}`
   );
   const lines = [
-    `Hello Pata KiDigital Marketplace. I would like to order the following items:`,
+    `Hello Pata Online. I would like to order the following items:`,
     ...itemLines,
     `Subtotal: ${formatTzs(subtotal)}`,
     deliveryLocation ? `My delivery location is ${deliveryLocation}.` : null,

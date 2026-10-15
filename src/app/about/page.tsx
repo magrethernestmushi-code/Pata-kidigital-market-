@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 import PageHeading from "@/components/PageHeading";
 
 export const metadata: Metadata = {
-  title: "About Pata KiDigital",
-  description: "Learn about Pata KiDigital Marketplace and our mission to serve Tanzanian university students.",
+  title: "About Pata Online",
+  description: "Learn about Pata Online and our mission to serve Tanzanian university students.",
 };
 
 export default function AboutPage() {
   return (
     <div className="container-page py-12 max-w-3xl">
-      <PageHeading title="About Pata KiDigital Marketplace" />
+      <PageHeading title="About Pata Online" />
       <div className="prose-sm flex flex-col gap-5 text-sm sm:text-base text-charcoal/80">
         <p>
-          Pata KiDigital Marketplace connects university students across Tanzania with
+          Pata Online connects university students across Tanzania with
           trusted campus shops and suppliers. Our promise is simple:{" "}
           <strong className="text-forest-dark">Student life. Sorted.</strong>
         </p>
@@ -36,7 +36,7 @@ export default function AboutPage() {
           <li>We protect your personal information and never share it beyond what&apos;s needed to fulfil your order.</li>
         </ul>
         <p>
-          Pata KiDigital Marketplace is based in Dar es Salaam, Tanzania.
+          Pata Online is based in Dar es Salaam, Tanzania.
         </p>
       </div>
     </div>

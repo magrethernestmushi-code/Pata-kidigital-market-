@@ -9,7 +9,7 @@ export default function DeliveryPolicyPage() {
       <PageHeading title="Delivery Policy" />
       <div className="flex flex-col gap-5 text-sm sm:text-base text-charcoal/80">
         <p>
-          Orders placed on Pata KiDigital Marketplace are delivered within Dar es Salaam
+          Orders placed on Pata Online are delivered within Dar es Salaam
           campuses by boda boda, coordinated between our team and the supplying partner
           shop.
         </p>

@@ -10,7 +10,7 @@ export default function LoginForm() {
     <form action={formAction} className="flex flex-col gap-4">
       <label className="block">
         <span className="text-sm font-semibold text-forest-dark block mb-1.5">Email</span>
-        <input type="email" name="email" required autoComplete="username" placeholder="admin@patakidigital.co.tz" />
+        <input type="email" name="email" required autoComplete="username" placeholder="admin@pataonline.co.tz" />
       </label>
       <label className="block">
         <span className="text-sm font-semibold text-forest-dark block mb-1.5">Password</span>

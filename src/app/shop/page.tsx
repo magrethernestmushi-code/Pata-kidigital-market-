@@ -5,7 +5,7 @@ import ProductFilters from "@/components/ProductFilters";
 
 export const metadata: Metadata = {
   title: "Shop All Products",
-  description: "Browse all products available on Pata KiDigital Marketplace.",
+  description: "Browse all products available on Pata Online.",
 };
 
 export default async function ShopPage({

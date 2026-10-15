@@ -10,7 +10,7 @@ export const DEFAULT_LOCALE: Locale = "en";
 
 export const strings = {
   brand: {
-    name: { en: "Pata KiDigital Marketplace", sw: "Pata KiDigital Marketplace" },
+    name: { en: "Pata Online", sw: "Pata Online" },
     promise: { en: "Student life. Sorted.", sw: "Maisha ya chuo. Rahisi." },
     tagline: {
       en: "Everything students need, in one place.",

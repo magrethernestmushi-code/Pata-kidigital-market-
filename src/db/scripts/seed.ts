@@ -12,7 +12,7 @@ async function main() {
   const [existingAdmin] = await db
     .select({ id: adminUsers.id })
     .from(adminUsers)
-    .where(eq(adminUsers.email, "admin@patakidigital.co.tz"))
+    .where(eq(adminUsers.email, "admin@pataonline.co.tz"))
     .limit(1);
 
   if (existingAdmin) {
@@ -20,26 +20,47 @@ async function main() {
     process.exit(0);
   }
 
-  console.log("Seeding Pata KiDigital Marketplace demo data...");
+  // Migration path from the brand's previous name: if the admin account
+  // was created before the rename (its email still ends in
+  // @patakidigital.co.tz), rename it in place instead of creating a
+  // second admin — the password and user id are kept unchanged.
+  const [legacyAdmin] = await db
+    .select({ id: adminUsers.id })
+    .from(adminUsers)
+    .where(eq(adminUsers.email, "admin@patakidigital.co.tz"))
+    .limit(1);
+
+  if (legacyAdmin) {
+    await db
+      .update(adminUsers)
+      .set({ email: "admin@pataonline.co.tz", name: "Pata Online Admin" })
+      .where(eq(adminUsers.id, legacyAdmin.id));
+    console.log(
+      "Renamed existing admin login from admin@patakidigital.co.tz to admin@pataonline.co.tz (same password)."
+    );
+    process.exit(0);
+  }
+
+  console.log("Seeding Pata Online demo data...");
 
   // --- Settings ---
   await db
     .insert(settings)
     .values([
       { key: "whatsapp_number", value: process.env.WHATSAPP_NUMBER ?? "255700000000" },
-      { key: "business_name", value: "Pata KiDigital Marketplace" },
-      { key: "business_email", value: "hello@patakidigital.co.tz" },
+      { key: "business_name", value: "Pata Online" },
+      { key: "business_email", value: "hello@pataonline.co.tz" },
       { key: "default_delivery_fee", value: "3000" },
     ])
     .onConflictDoNothing();
 
   // --- Admin user ---
-  const adminEmail = "admin@patakidigital.co.tz";
+  const adminEmail = "admin@pataonline.co.tz";
   const adminPasswordHash = await hashPassword("ChangeMe123!");
   await db
     .insert(adminUsers)
     .values({
-      name: "Pata KiDigital Admin",
+      name: "Pata Online Admin",
       email: adminEmail,
       passwordHash: adminPasswordHash,
       role: "admin",

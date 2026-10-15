@@ -6,13 +6,13 @@ import { getSetting } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Contact & WhatsApp Support",
-  description: "Get in touch with Pata KiDigital Marketplace via WhatsApp or our contact form.",
+  description: "Get in touch with Pata Online via WhatsApp or our contact form.",
 };
 
 export default async function ContactPage() {
   const whatsappNumber = await getSetting("whatsapp_number");
   const businessEmail = await getSetting("business_email");
-  const waUrl = buildWhatsAppUrl(whatsappNumber, "Hello Pata KiDigital Marketplace, I have a question.");
+  const waUrl = buildWhatsAppUrl(whatsappNumber, "Hello Pata Online, I have a question.");
 
   return (
     <div className="container-page py-12 max-w-2xl">

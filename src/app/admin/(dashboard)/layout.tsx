@@ -47,7 +47,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
 
       <div className="flex-1 min-w-0">
         <header className="md:hidden sticky top-0 z-20 bg-forest text-white px-4 py-3 flex items-center justify-between">
-          <span className="font-bold text-sm">Pata KiDigital Admin</span>
+          <span className="font-bold text-sm">Pata Online Admin</span>
           <form action={logoutAction}>
             <button className="text-xs font-semibold text-amber">Sign Out</button>
           </form>

@@ -5,7 +5,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 export default function WhatsAppFloatingButton({ whatsappNumber }: { whatsappNumber: string }) {
   const url = buildWhatsAppUrl(
     whatsappNumber,
-    "Hello Pata KiDigital Marketplace, I have a question."
+    "Hello Pata Online, I have a question."
   );
   return (
     <a
