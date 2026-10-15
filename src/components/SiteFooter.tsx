@@ -65,7 +65,7 @@ export default function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="container-page py-4 text-xs text-cream/60 flex flex-col sm:flex-row gap-2 sm:justify-between">
           <span>© {new Date().getFullYear()} Pata KiDigital Marketplace. All rights reserved.</span>
-          <span>Operated under Geamos Techwave, Dar es Salaam.</span>
+          <span>Dar es Salaam, Tanzania.</span>
         </div>
       </div>
     </footer>

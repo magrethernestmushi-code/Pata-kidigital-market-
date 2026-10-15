@@ -36,8 +36,7 @@ export default function AboutPage() {
           <li>We protect your personal information and never share it beyond what&apos;s needed to fulfil your order.</li>
         </ul>
         <p>
-          Pata KiDigital Marketplace is operated under Geamos Techwave, part of the Geamos
-          Group, based in Dar es Salaam, Tanzania.
+          Pata KiDigital Marketplace is based in Dar es Salaam, Tanzania.
         </p>
       </div>
     </div>
