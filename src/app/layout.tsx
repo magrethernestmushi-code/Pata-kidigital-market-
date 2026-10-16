@@ -15,15 +15,15 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Pata Online — Student life. Sorted.",
+    default: "Pata Online — Everything you need, delivered.",
     template: "%s | Pata Online",
   },
   description:
-    "Pata Online connects Tanzanian university students with trusted campus shops. Shop beauty, fashion, electronics and hostel essentials — order online or via WhatsApp, delivered by boda boda.",
+    "Pata Online connects customers across Tanzania with trusted local shops. Shop beauty, fashion, electronics and home essentials — order online or via WhatsApp, delivered by boda boda.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
-    title: "Pata Online — Student life. Sorted.",
-    description: "Everything students need, in one place.",
+    title: "Pata Online — Everything you need, delivered.",
+    description: "Everything you need, in one place.",
     type: "website",
   },
 };

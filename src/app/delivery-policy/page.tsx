@@ -10,13 +10,13 @@ export default function DeliveryPolicyPage() {
       <div className="flex flex-col gap-5 text-sm sm:text-base text-charcoal/80">
         <p>
           Orders placed on Pata Online are delivered within Dar es Salaam
-          campuses by boda boda, coordinated between our team and the supplying partner
+          by boda boda, coordinated between our team and the supplying partner
           shop.
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Delivery Cost</h2>
         <p>
           The delivery fee is separate from the product price and is confirmed with you
-          directly based on your hostel or delivery location before your order is
+          directly based on your delivery location before your order is
           dispatched. It is never automatically added without your confirmation.
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Delivery Timing</h2>

@@ -13,7 +13,7 @@ export default function TermsPage() {
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">About the Marketplace</h2>
         <p>
-          Pata Online is a platform connecting university students with
+          Pata Online is a platform connecting customers with
           independent partner shops and suppliers. Products are supplied, priced, and
           fulfilled by these partners, with Pata Online earning a commission on
           completed sales. We do our best to ensure listed information is accurate, but
@@ -41,7 +41,7 @@ export default function TermsPage() {
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Limitation of Liability</h2>
         <p>
-          Pata Online facilitates transactions between students and partner
+          Pata Online facilitates transactions between customers and partner
           suppliers. While we vet our partners, we are not the manufacturer of most listed
           products and our liability is limited to the value of the relevant order.
         </p>

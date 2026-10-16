@@ -1,11 +1,113 @@
 import "dotenv/config";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/db";
 import { categories, products, suppliers, adminUsers, settings } from "@/db/schema";
 import { hashPassword } from "@/lib/auth";
 import { slugify } from "@/lib/format";
 
+/**
+ * Always-run, idempotent content fixes. Each one matches on the OLD value
+ * and is a no-op once applied, so it's safe to run on every deploy even
+ * though the one-time demo seed below only ever runs once. This is how a
+ * copy/wording change (a rename, a rebrand) reaches a database that was
+ * already seeded in the past, without touching anything an admin has since
+ * edited themselves through the dashboard.
+ */
+async function runContentMigrations() {
+  // Settings written by the very first seed, before the "Pata Online" rename.
+  await db
+    .update(settings)
+    .set({ value: "Pata Online", updatedAt: new Date() })
+    .where(and(eq(settings.key, "business_name"), eq(settings.value, "Pata KiDigital Marketplace")));
+  await db
+    .update(settings)
+    .set({ value: "hello@pataonline.co.tz", updatedAt: new Date() })
+    .where(and(eq(settings.key, "business_email"), eq(settings.value, "hello@patakidigital.co.tz")));
+
+  // Category renames away from student-specific wording to general retail
+  // categories. Matched by the OLD slug and updated in place (same id), so
+  // products already assigned to these categories stay correctly linked.
+  await db
+    .update(categories)
+    .set({ name: "Home & Living Essentials", nameSw: "Mahitaji ya Nyumbani", slug: "home-living-essentials" })
+    .where(eq(categories.slug, "room-hostel-essentials"));
+  await db
+    .update(categories)
+    .set({ name: "Stationery & Office Supplies", nameSw: "Vifaa vya Ofisi na Uandishi", slug: "stationery-office-supplies" })
+    .where(eq(categories.slug, "student-supplies"));
+
+  // Supplier renames (demo suppliers only).
+  await db.update(suppliers).set({ name: "Beauty Hub TZ" }).where(eq(suppliers.name, "Campus Beauty Hub"));
+  await db.update(suppliers).set({ name: "Home Essentials Co." }).where(eq(suppliers.name, "Hostel Essentials Co."));
+
+  // Demo product copy: remove campus/hostel/semester wording, matched by
+  // the OLD slug since changing the name changes the slug.
+  const productCopyMigrations: {
+    oldSlug: string;
+    name: string;
+    slug: string;
+    description: string;
+  }[] = [
+    {
+      oldSlug: "matte-liquid-lipstick-set-3-pack",
+      name: "Matte Liquid Lipstick Set (3-pack)",
+      slug: "matte-liquid-lipstick-set-3-pack",
+      description:
+        "Long-lasting matte liquid lipstick trio in versatile everyday shades. Lightweight formula that doesn't dry out your lips.",
+    },
+    {
+      oldSlug: "campus-tote-backpack",
+      name: "Canvas Tote Backpack",
+      slug: "canvas-tote-backpack",
+      description: "Durable canvas backpack with laptop sleeve, built for daily commuting and everyday use.",
+    },
+    {
+      oldSlug: "classic-denim-jacket",
+      name: "Classic Denim Jacket",
+      slug: "classic-denim-jacket",
+      description: "Unisex denim jacket, a wardrobe staple that pairs with anything.",
+    },
+    {
+      oldSlug: "everyday-canvas-sneakers",
+      name: "Everyday Canvas Sneakers",
+      slug: "everyday-canvas-sneakers",
+      description: "Lightweight canvas sneakers for all-day comfort, wherever you're headed.",
+    },
+    {
+      oldSlug: "wireless-earbuds-bluetooth-5-3",
+      name: "Wireless Earbuds (Bluetooth 5.3)",
+      slug: "wireless-earbuds-bluetooth-5-3",
+      description: "Compact true-wireless earbuds with charging case — great for calls, music and daily use.",
+    },
+    {
+      oldSlug: "hostel-starter-bedding-set",
+      name: "Starter Bedding Set",
+      slug: "starter-bedding-set",
+      description: "Complete bedding set with sheet, pillowcase and light duvet — sized for standard single beds.",
+    },
+    {
+      oldSlug: "a4-notebook-stationery-bundle",
+      name: "A4 Notebook & Stationery Bundle",
+      slug: "a4-notebook-stationery-bundle",
+      description:
+        "Five A4 ruled notebooks plus pens, highlighters and sticky notes — everything for school, work or home office.",
+    },
+  ];
+  for (const m of productCopyMigrations) {
+    await db
+      .update(products)
+      .set({ name: m.name, slug: m.slug, description: m.description, updatedAt: new Date() })
+      .where(eq(products.slug, m.oldSlug));
+  }
+  await db
+    .update(products)
+    .set({ deliveryEstimate: "Same day to next day within Dar es Salaam." })
+    .where(eq(products.deliveryEstimate, "Same day to next day within Dar es Salaam campuses."));
+}
+
 async function main() {
+  await runContentMigrations();
+
   // Safe to run on every deploy: if the demo admin already exists, the
   // database has already been seeded once, so skip re-inserting suppliers
   // (which have no unique constraint and would otherwise duplicate).
@@ -16,7 +118,7 @@ async function main() {
     .limit(1);
 
   if (existingAdmin) {
-    console.log("Demo data already seeded — skipping (admin user already exists).");
+    console.log("Demo data already seeded — content migrations re-checked, nothing else to do.");
     process.exit(0);
   }
 
@@ -74,8 +176,8 @@ async function main() {
     { name: "Fashion & Accessories", nameSw: "Mitindo na Vifaa", img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600&q=70" },
     { name: "Clothing & Footwear", nameSw: "Mavazi na Viatu", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=70" },
     { name: "Electronics & Gadgets", nameSw: "Elektroniki na Vifaa", img: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&q=70" },
-    { name: "Room & Hostel Essentials", nameSw: "Mahitaji ya Bweni", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=70" },
-    { name: "Student Supplies", nameSw: "Vifaa vya Masomo", img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=70" },
+    { name: "Home & Living Essentials", nameSw: "Mahitaji ya Nyumbani", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&q=70" },
+    { name: "Stationery & Office Supplies", nameSw: "Vifaa vya Ofisi na Uandishi", img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=70" },
   ];
 
   const insertedCats = [];
@@ -100,10 +202,10 @@ async function main() {
 
   // --- Suppliers ---
   const supplierData = [
-    { name: "Campus Beauty Hub", phone: "255712000001", location: "Mlimani City, Dar es Salaam", rate: "15.00" },
+    { name: "Beauty Hub TZ", phone: "255712000001", location: "Mlimani City, Dar es Salaam", rate: "15.00" },
     { name: "UrbanWear TZ", phone: "255712000002", location: "Kariakoo, Dar es Salaam", rate: "18.00" },
     { name: "TechSpot Dar", phone: "255712000003", location: "Kinondoni, Dar es Salaam", rate: "12.00" },
-    { name: "Hostel Essentials Co.", phone: "255712000004", location: "Ubungo, Dar es Salaam", rate: "15.00" },
+    { name: "Home Essentials Co.", phone: "255712000004", location: "Ubungo, Dar es Salaam", rate: "15.00" },
   ];
   const insertedSuppliers = [];
   for (const s of supplierData) {
@@ -142,7 +244,7 @@ async function main() {
       sup: 0,
       price: 15000,
       cost: 9000,
-      desc: "Long-lasting matte liquid lipstick trio in versatile campus-friendly shades. Lightweight formula that doesn't dry out your lips.",
+      desc: "Long-lasting matte liquid lipstick trio in versatile everyday shades. Lightweight formula that doesn't dry out your lips.",
       images: ["https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&q=70"],
       variations: [{ type: "Shade Set", options: ["Everyday Nudes", "Bold Reds", "Berry Tones"] }],
       featured: true,
@@ -162,12 +264,12 @@ async function main() {
       newArrival: true,
     },
     {
-      name: "Campus Tote Backpack",
+      name: "Canvas Tote Backpack",
       cat: 1,
       sup: 1,
       price: 32000,
       cost: 20000,
-      desc: "Durable canvas backpack with laptop sleeve, built for daily lecture-hall-to-hostel carrying.",
+      desc: "Durable canvas backpack with laptop sleeve, built for daily commuting and everyday use.",
       images: ["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=70"],
       variations: [{ type: "Color", options: ["Black", "Olive", "Tan"] }],
       featured: true,
@@ -191,7 +293,7 @@ async function main() {
       sup: 1,
       price: 45000,
       cost: 28000,
-      desc: "Unisex denim jacket, a campus wardrobe staple that pairs with anything.",
+      desc: "Unisex denim jacket, a wardrobe staple that pairs with anything.",
       images: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=70"],
       variations: [{ type: "Size", options: ["S", "M", "L", "XL"] }],
       featured: true,
@@ -205,7 +307,7 @@ async function main() {
       sup: 1,
       price: 38000,
       cost: 24000,
-      desc: "Lightweight canvas sneakers for all-day comfort around campus.",
+      desc: "Lightweight canvas sneakers for all-day comfort, wherever you're headed.",
       images: ["https://images.unsplash.com/photo-1600185365483-26d7f4e8e8f4?w=800&q=70"],
       variations: [{ type: "Size", options: ["38", "39", "40", "41", "42", "43"] }],
       stock: "in_stock",
@@ -217,7 +319,7 @@ async function main() {
       sup: 2,
       price: 42000,
       cost: 27000,
-      desc: "Compact true-wireless earbuds with charging case — great for lecture recordings and music.",
+      desc: "Compact true-wireless earbuds with charging case — great for calls, music and daily use.",
       images: ["https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=70"],
       featured: true,
       stock: "in_stock",
@@ -247,12 +349,12 @@ async function main() {
       qty: 0,
     },
     {
-      name: "Hostel Starter Bedding Set",
+      name: "Starter Bedding Set",
       cat: 4,
       sup: 3,
       price: 48000,
       cost: 30000,
-      desc: "Complete bedding set with sheet, pillowcase and light duvet — sized for standard hostel beds.",
+      desc: "Complete bedding set with sheet, pillowcase and light duvet — sized for standard single beds.",
       images: ["https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=70"],
       variations: [{ type: "Color", options: ["Grey", "Navy", "Cream"] }],
       featured: true,
@@ -277,7 +379,7 @@ async function main() {
       sup: 3,
       price: 12000,
       cost: 7000,
-      desc: "Five A4 ruled notebooks plus pens, highlighters and sticky notes — everything for a new semester.",
+      desc: "Five A4 ruled notebooks plus pens, highlighters and sticky notes — everything for school, work or home office.",
       images: ["https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=70"],
       stock: "in_stock",
       qty: 50,
@@ -307,7 +409,7 @@ async function main() {
         isNewArrival: !!p.newArrival,
         returnPolicy: "Items may be returned within 48 hours of delivery if unused and in original packaging.",
         warrantyInfo: p.cat === 3 ? "30-day supplier warranty against manufacturing defects." : null,
-        deliveryEstimate: "Same day to next day within Dar es Salaam campuses.",
+        deliveryEstimate: "Same day to next day within Dar es Salaam.",
       })
       .onConflictDoUpdate({
         target: products.slug,

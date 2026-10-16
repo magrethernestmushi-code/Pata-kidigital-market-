@@ -14,8 +14,8 @@ export default function PrivacyPolicyPage() {
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">Information We Collect</h2>
         <p>
-          When you place an order, we collect your name, phone number, university or
-          campus, and delivery location. We do not require you to create an account or
+          When you place an order, we collect your name, phone number, city or
+          area, and delivery location. We do not require you to create an account or
           provide unnecessary personal information.
         </p>
         <h2 className="font-bold text-forest-dark text-lg mt-2">How We Use Your Information</h2>

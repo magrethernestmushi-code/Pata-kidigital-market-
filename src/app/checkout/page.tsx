@@ -120,20 +120,20 @@ export default function CheckoutPage() {
               placeholder="e.g. 0712 345 678"
             />
           </Field>
-          <Field label="University / Campus">
+          <Field label="City / Area">
             <input
               required
               value={form.university}
               onChange={(e) => setForm((f) => ({ ...f, university: e.target.value }))}
-              placeholder="e.g. University of Dar es Salaam"
+              placeholder="e.g. Mikocheni, Dar es Salaam"
             />
           </Field>
-          <Field label="Hostel / Delivery Location">
+          <Field label="Delivery Address">
             <input
               required
               value={form.deliveryLocation}
               onChange={(e) => setForm((f) => ({ ...f, deliveryLocation: e.target.value }))}
-              placeholder="e.g. Hall 7, Room 204"
+              placeholder="e.g. House No. 12, Kinondoni Road"
             />
           </Field>
 

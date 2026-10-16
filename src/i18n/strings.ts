@@ -11,10 +11,10 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const strings = {
   brand: {
     name: { en: "Pata Online", sw: "Pata Online" },
-    promise: { en: "Student life. Sorted.", sw: "Maisha ya chuo. Rahisi." },
+    promise: { en: "Everything you need, delivered.", sw: "Kila kitu unachohitaji, kwa mlangoni." },
     tagline: {
-      en: "Everything students need, in one place.",
-      sw: "Kila kitu mwanafunzi anachohitaji, mahali pamoja.",
+      en: "Everything you need, in one place.",
+      sw: "Kila kitu unachohitaji, mahali pamoja.",
     },
   },
   nav: {
@@ -29,17 +29,17 @@ export const strings = {
     admin: { en: "Admin", sw: "Msimamizi" },
   },
   home: {
-    heroHeadline: { en: "Your campus. Your style.", sw: "Chuo chako. Mtindo wako." },
+    heroHeadline: { en: "Quality products. Delivered to your door.", sw: "Bidhaa bora. Hadi mlangoni kwako." },
     heroSub: {
-      en: "Shop everyday essentials, fashion, beauty and electronics from trusted campus suppliers — delivered to your hostel by boda boda.",
-      sw: "Nunua mahitaji ya kila siku, mitindo, urembo na vifaa vya elektroniki kutoka kwa wauzaji wanaoaminika — vinafikishwa bwenini kwako kwa boda boda.",
+      en: "Shop everyday essentials, fashion, beauty and electronics from trusted local suppliers — delivered straight to you by boda boda.",
+      sw: "Nunua mahitaji ya kila siku, mitindo, urembo na vifaa vya elektroniki kutoka kwa wauzaji wanaoaminika — vinafikishwa kwako kwa boda boda.",
     },
     shopCta: { en: "Shop Products", sw: "Nunua Bidhaa" },
     categoriesTitle: { en: "Shop by Category", sw: "Nunua kwa Aina" },
     featuredTitle: { en: "Featured Products", sw: "Bidhaa Maalum" },
     newArrivalsTitle: { en: "New Arrivals", sw: "Bidhaa Mpya" },
-    deliveryTitle: { en: "How Campus Delivery Works", sw: "Jinsi Delivery ya Chuo Inavyofanya Kazi" },
-    trustTitle: { en: "Why Students Trust Us", sw: "Kwa Nini Wanafunzi Wanatuamini" },
+    deliveryTitle: { en: "How Delivery Works", sw: "Jinsi Delivery Inavyofanya Kazi" },
+    trustTitle: { en: "Why Customers Trust Us", sw: "Kwa Nini Wateja Wanatuamini" },
     whatsappCtaTitle: { en: "Prefer to order on WhatsApp?", sw: "Unapenda kuagiza kwa WhatsApp?" },
     whatsappCtaSub: {
       en: "Chat with us directly and we'll help you find what you need.",
@@ -81,8 +81,8 @@ export const strings = {
     title: { en: "Checkout", sw: "Malipo" },
     name: { en: "Full Name", sw: "Jina Kamili" },
     phone: { en: "Phone Number", sw: "Namba ya Simu" },
-    university: { en: "University / Campus", sw: "Chuo" },
-    location: { en: "Hostel / Delivery Location", sw: "Bweni / Eneo la Kufikisha" },
+    university: { en: "City / Area", sw: "Jiji / Eneo" },
+    location: { en: "Delivery Address", sw: "Anwani ya Kufikisha" },
     instructions: { en: "Delivery Instructions (optional)", sw: "Maelekezo ya Ufikishaji (hiari)" },
     paymentMethod: { en: "Preferred Payment Method", sw: "Njia ya Malipo Unayopenda" },
     placeOrder: { en: "Place Order", sw: "Weka Oda" },

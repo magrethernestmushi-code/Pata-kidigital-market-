@@ -92,14 +92,14 @@ export default async function HomePage() {
           />
         </div>
         <div className="relative container-page py-16 sm:py-24 flex flex-col items-start gap-5">
-          <span className="amber-tag">Student life. Sorted.</span>
+          <span className="amber-tag">Everything you need, delivered.</span>
           <h1 className="text-3xl sm:text-5xl font-extrabold text-white max-w-xl leading-tight">
-            Your campus. Your style.
+            Quality products. Delivered to your door.
           </h1>
           <p className="text-cream/90 max-w-lg text-sm sm:text-base">
             Shop everyday essentials, fashion, beauty and electronics from
-            trusted campus suppliers — ordered online or via WhatsApp,
-            delivered to your hostel by boda boda.
+            trusted local suppliers — ordered online or via WhatsApp,
+            delivered straight to you by boda boda.
           </p>
           <div className="flex flex-wrap gap-3 mt-2">
             <Link href="/shop" className="btn-primary bg-amber text-forest-dark hover:bg-amber-dark !bg-amber">
@@ -173,7 +173,7 @@ export default async function HomePage() {
       <section className="bg-white py-12 sm:py-16 mt-6">
         <div className="container-page">
           <h2 className="text-xl sm:text-2xl font-extrabold text-forest-dark mb-8">
-            How Campus Delivery Works
+            How Delivery Works
           </h2>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
@@ -190,7 +190,7 @@ export default async function HomePage() {
               {
                 step: "3",
                 title: "Boda boda delivers to you",
-                body: "Your order is picked up from the supplier and delivered straight to your hostel.",
+                body: "Your order is picked up from the supplier and delivered straight to your door.",
               },
             ].map((s) => (
               <div key={s.step} className="flex flex-col gap-2">
@@ -208,7 +208,7 @@ export default async function HomePage() {
       {/* Trust */}
       <section className="container-page py-12 sm:py-16">
         <h2 className="text-xl sm:text-2xl font-extrabold text-forest-dark mb-8">
-          Why Students Trust Us
+          Why Customers Trust Us
         </h2>
         <div className="grid sm:grid-cols-3 gap-6">
           {[

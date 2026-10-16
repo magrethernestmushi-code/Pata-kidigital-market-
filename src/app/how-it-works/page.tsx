@@ -13,7 +13,7 @@ const steps = [
   },
   {
     title: "2. Add to cart or request an order",
-    body: "Add items to your cart and checkout with your name, phone, university and delivery location — no account needed. Or send your order details straight on WhatsApp.",
+    body: "Add items to your cart and checkout with your name, phone, city/area and delivery location — no account needed. Or send your order details straight on WhatsApp.",
   },
   {
     title: "3. We confirm availability and cost",
@@ -24,8 +24,8 @@ const steps = [
     body: "Once confirmed, pay via mobile money, bank transfer, or cash on delivery — whichever is agreed with our team. Payment is only ever verified through our official process.",
   },
   {
-    title: "5. Boda boda delivers to your hostel",
-    body: "Your order is picked up from the supplier and delivered to your campus or hostel, with delivery cost handled separately from the product price.",
+    title: "5. Boda boda delivers to your door",
+    body: "Your order is picked up from the supplier and delivered straight to you, with delivery cost handled separately from the product price.",
   },
   {
     title: "6. Track your order anytime",

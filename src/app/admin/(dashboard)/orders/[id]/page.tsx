@@ -34,7 +34,7 @@ export default async function AdminOrderDetailPage({
           <dl className="text-sm flex flex-col gap-1.5">
             <Row label="Name" value={order.customerName} />
             <Row label="Phone" value={order.phone} />
-            <Row label="University" value={order.university} />
+            <Row label="City / Area" value={order.university} />
             <Row label="Delivery Location" value={order.deliveryLocation} />
             {order.deliveryInstructions && (
               <Row label="Instructions" value={order.deliveryInstructions} />

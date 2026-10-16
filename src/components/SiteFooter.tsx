@@ -19,8 +19,8 @@ export default function SiteFooter() {
         <div>
           <Logo className="[&_span.text-forest]:text-white [&_span]:text-white" />
           <p className="mt-3 text-sm text-cream/70 max-w-xs">
-            Student life. Sorted. Everything students need, in one place —
-            browse, order and get it delivered to your hostel.
+            Everything you need, delivered. Browse, order and get it
+            delivered straight to your door.
           </p>
         </div>
         <div>
