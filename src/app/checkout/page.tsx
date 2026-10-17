@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
 import { formatTzs } from "@/lib/format";
 import { PAYMENT_METHODS } from "@/lib/orders";
+import LocationPicker from "@/components/LocationPicker";
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
@@ -28,27 +29,7 @@ export default function CheckoutPage() {
     preferredPayment: PAYMENT_METHODS[0],
   });
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
-  const [locationStatus, setLocationStatus] = useState<
-    "idle" | "requesting" | "granted" | "denied" | "unsupported"
-  >("idle");
-
-  function handleShareLocation() {
-    if (!("geolocation" in navigator)) {
-      setLocationStatus("unsupported");
-      return;
-    }
-    setLocationStatus("requesting");
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setLocationStatus("granted");
-      },
-      () => {
-        setLocationStatus("denied");
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  }
+  const [showMapPicker, setShowMapPicker] = useState(false);
 
   if (items.length === 0) {
     return (
@@ -140,25 +121,20 @@ export default function CheckoutPage() {
           <div className="rounded-lg border border-forest/15 bg-forest/5 p-3">
             <button
               type="button"
-              onClick={handleShareLocation}
-              disabled={locationStatus === "requesting" || locationStatus === "granted"}
-              className="text-sm font-semibold text-forest-dark flex items-center gap-1.5 disabled:opacity-70"
+              onClick={() => setShowMapPicker(true)}
+              className="text-sm font-semibold text-forest-dark flex items-center gap-1.5"
             >
-              📍{" "}
-              {locationStatus === "granted"
-                ? "Location shared"
-                : locationStatus === "requesting"
-                ? "Getting your location..."
-                : "Share my exact location (optional)"}
+              📍 {coords ? "Edit pinned location" : "Set delivery location on map (optional)"}
             </button>
-            {locationStatus === "idle" && (
+            {!coords && (
               <p className="text-xs text-charcoal/50 mt-1">
-                Helps our delivery rider find you faster and get an accurate delivery fee.
+                Drop a pin on the map so our delivery rider can find you faster and we can
+                give you an accurate delivery fee.
               </p>
             )}
-            {locationStatus === "granted" && coords && (
+            {coords && (
               <p className="text-xs text-charcoal/60 mt-1">
-                Got it ✓{" "}
+                Pin set ✓{" "}
                 <a
                   href={`https://maps.google.com/?q=${coords.lat},${coords.lng}`}
                   target="_blank"
@@ -169,19 +145,18 @@ export default function CheckoutPage() {
                 </a>
               </p>
             )}
-            {locationStatus === "denied" && (
-              <p className="text-xs text-charcoal/60 mt-1">
-                No problem — we&apos;ll use the location you typed above. You can allow
-                location access in your browser settings if you change your mind.
-              </p>
-            )}
-            {locationStatus === "unsupported" && (
-              <p className="text-xs text-charcoal/60 mt-1">
-                Your browser doesn&apos;t support this — the location you typed above is all we
-                need.
-              </p>
-            )}
           </div>
+
+          {showMapPicker && (
+            <LocationPicker
+              initial={coords}
+              onClose={() => setShowMapPicker(false)}
+              onConfirm={(c) => {
+                setCoords(c);
+                setShowMapPicker(false);
+              }}
+            />
+          )}
 
           <Field label="Delivery Instructions (optional)">
             <textarea
