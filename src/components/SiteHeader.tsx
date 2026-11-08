@@ -46,6 +46,9 @@ export default async function SiteHeader() {
           <Link href="/how-it-works" className="hover:text-forest transition-colors">
             How It Works
           </Link>
+          <Link href="/businesses" className="hover:text-forest transition-colors">
+            Businesses
+          </Link>
         </nav>
         <div className="ml-auto lg:ml-0 flex items-center gap-1">
           <a

@@ -9,8 +9,18 @@ import {
   timestamp,
   jsonb,
   pgEnum,
+  customType,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+
+// Raw binary storage for uploaded images. Stored in Postgres (not on the web
+// service's local disk, which Render wipes on every deploy/restart) so
+// uploaded photos persist permanently until a business or admin deletes them.
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType() {
+    return "bytea";
+  },
+});
 
 // ---------- Enums ----------
 export const orderStatusEnum = pgEnum("order_status", [
@@ -36,6 +46,13 @@ export const stockStatusEnum = pgEnum("stock_status", [
   "limited",
   "out_of_stock",
   "unconfirmed", // demo / not yet confirmed by supplier
+]);
+
+export const adRequestStatusEnum = pgEnum("ad_request_status", [
+  "requested",
+  "in_progress",
+  "delivered",
+  "cancelled",
 ]);
 
 // ---------- Settings (key/value config, e.g. WhatsApp number) ----------
@@ -172,6 +189,76 @@ export const enquiries = pgTable("enquiries", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// ---------- Business accounts (self-service marketplace listings) ----------
+// A "business" is a self-registering merchant (distinct from admin-managed
+// `suppliers`): they log in themselves, manage their own product listings,
+// and get one free trial month before a recurring listing fee applies.
+export const businesses = pgTable("businesses", {
+  id: serial("id").primaryKey(),
+  businessName: varchar("business_name", { length: 160 }).notNull(),
+  ownerName: varchar("owner_name", { length: 160 }),
+  email: varchar("email", { length: 160 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  whatsappNumber: varchar("whatsapp_number", { length: 40 }).notNull(),
+  instagramHandle: varchar("instagram_handle", { length: 120 }),
+  tiktokHandle: varchar("tiktok_handle", { length: 120 }),
+  description: text("description"),
+  location: varchar("location", { length: 200 }),
+  logoImageId: integer("logo_image_id"),
+  // Trial starts the moment they sign up; one free month.
+  trialEndsAt: timestamp("trial_ends_at").notNull(),
+  // Set/extended by an admin after manually confirming a 30,000 TZS mobile
+  // money / bank payment (same manual-verification pattern as customer
+  // orders — no payment gateway is wired up yet). Listing stays visible
+  // while now() < trialEndsAt OR now() < subscriptionExpiresAt.
+  subscriptionExpiresAt: timestamp("subscription_expires_at"),
+  suspended: boolean("suspended").default(false).notNull(), // admin kill-switch, independent of billing
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Uploaded photos, stored as binary data directly in Postgres so they
+// survive redeploys (Render's web service disk is wiped on every deploy —
+// Postgres is the one thing on the free plan that persists).
+export const businessImages = pgTable("business_images", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id")
+    .references(() => businesses.id, { onDelete: "cascade" })
+    .notNull(),
+  contentType: varchar("content_type", { length: 100 }).notNull(),
+  data: bytea("data").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const businessProducts = pgTable("business_products", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id")
+    .references(() => businesses.id, { onDelete: "cascade" })
+    .notNull(),
+  name: varchar("name", { length: 220 }).notNull(),
+  description: text("description"),
+  priceTzs: numeric("price_tzs", { precision: 12, scale: 2 }), // null = "price on request"
+  imageIds: jsonb("image_ids").$type<number[]>().default([]).notNull(),
+  isHidden: boolean("is_hidden").default(false).notNull(), // business can hide a listing themselves
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// A business requesting a paid digital-marketing ad from Pata Kidigital
+// (flat 100,000 TZS per ad, fulfilled manually by the agency — not automated).
+export const adRequests = pgTable("ad_requests", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id")
+    .references(() => businesses.id, { onDelete: "cascade" })
+    .notNull(),
+  details: text("details").notNull(), // what the business wants the ad to promote/say
+  priceTzs: numeric("price_tzs", { precision: 12, scale: 2 }).default("100000").notNull(),
+  status: adRequestStatusEnum("status").default("requested").notNull(),
+  adminNotes: text("admin_notes"),
+  deliverableUrl: text("deliverable_url"), // link to the finished ad, once delivered
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // ---------- Relations ----------
 export const categoriesRelations = relations(categories, ({ many }) => ({
   products: many(products),
@@ -209,5 +296,32 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
   supplier: one(suppliers, {
     fields: [orderItems.supplierId],
     references: [suppliers.id],
+  }),
+}));
+
+export const businessesRelations = relations(businesses, ({ many }) => ({
+  products: many(businessProducts),
+  images: many(businessImages),
+  adRequests: many(adRequests),
+}));
+
+export const businessImagesRelations = relations(businessImages, ({ one }) => ({
+  business: one(businesses, {
+    fields: [businessImages.businessId],
+    references: [businesses.id],
+  }),
+}));
+
+export const businessProductsRelations = relations(businessProducts, ({ one }) => ({
+  business: one(businesses, {
+    fields: [businessProducts.businessId],
+    references: [businesses.id],
+  }),
+}));
+
+export const adRequestsRelations = relations(adRequests, ({ one }) => ({
+  business: one(businesses, {
+    fields: [adRequests.businessId],
+    references: [businesses.id],
   }),
 }));

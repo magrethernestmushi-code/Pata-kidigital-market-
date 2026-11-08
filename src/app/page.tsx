@@ -233,6 +233,29 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Business directory CTA */}
+      <section className="container-page pb-6">
+        <div className="card bg-amber/15 border border-amber/40 flex flex-col sm:flex-row items-center justify-between gap-4 p-7 sm:p-10">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-forest-dark">
+              Have a business? Get listed free.
+            </h2>
+            <p className="text-charcoal/70 text-sm mt-1 max-w-lg">
+              Add your products with photos, link your WhatsApp, Instagram and TikTok, and reach
+              students on campus. Free for your first month.
+            </p>
+          </div>
+          <div className="flex gap-3 shrink-0">
+            <Link href="/businesses" className="btn-secondary">
+              Browse Businesses
+            </Link>
+            <Link href="/business/signup" className="btn-primary">
+              List Your Business
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* WhatsApp CTA */}
       <section className="container-page pb-16">
         <div className="card bg-forest text-cream flex flex-col sm:flex-row items-center justify-between gap-4 p-7 sm:p-10">

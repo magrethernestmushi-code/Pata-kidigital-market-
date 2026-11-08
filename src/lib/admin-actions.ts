@@ -9,6 +9,8 @@ import {
   orderItems,
   enquiries,
   settings,
+  businesses,
+  adRequests,
 } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { getAdminSession } from "@/lib/auth";
@@ -283,4 +285,61 @@ export async function updateSettingsAction(formData: FormData) {
 
   revalidatePath("/admin/settings");
   revalidatePath("/");
+}
+
+// ---------- Businesses (self-service marketplace accounts) ----------
+const SUBSCRIPTION_DAYS = 30;
+
+/** Admin manually confirms a 30,000 TZS mobile money / bank payment and
+ * extends the business's listing by another 30 days — same manual-
+ * verification pattern already used for customer orders. */
+export async function confirmBusinessPaymentAction(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+
+  const business = await db.query.businesses.findFirst({ where: eq(businesses.id, id) });
+  if (!business) throw new Error("Business not found.");
+
+  const now = new Date();
+  const currentExpiry = business.subscriptionExpiresAt
+    ? new Date(business.subscriptionExpiresAt)
+    : business.trialEndsAt
+      ? new Date(business.trialEndsAt)
+      : now;
+  const base = currentExpiry > now ? currentExpiry : now;
+  const newExpiry = new Date(base.getTime() + SUBSCRIPTION_DAYS * 24 * 60 * 60 * 1000);
+
+  await db.update(businesses).set({ subscriptionExpiresAt: newExpiry }).where(eq(businesses.id, id));
+  revalidatePath("/admin/businesses");
+  revalidatePath("/businesses");
+}
+
+export async function toggleBusinessSuspendedAction(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const suspended = formData.get("suspended") === "true";
+  await db.update(businesses).set({ suspended }).where(eq(businesses.id, id));
+  revalidatePath("/admin/businesses");
+  revalidatePath("/businesses");
+}
+
+// ---------- Ad requests ----------
+export async function updateAdRequestAction(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const status = String(formData.get("status") ?? "requested") as
+    | "requested"
+    | "in_progress"
+    | "delivered"
+    | "cancelled";
+  const adminNotes = String(formData.get("adminNotes") ?? "").trim() || null;
+  const deliverableUrl = String(formData.get("deliverableUrl") ?? "").trim() || null;
+
+  await db
+    .update(adRequests)
+    .set({ status, adminNotes, deliverableUrl, updatedAt: new Date() })
+    .where(eq(adRequests.id, id));
+
+  revalidatePath("/admin/ad-requests");
+  revalidatePath("/business/dashboard/ads");
 }
